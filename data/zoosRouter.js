@@ -101,6 +101,33 @@ router.put('/:id', (req, res) => {
 
 // REMOVE REQUESTS
 
+router.delete('/:id', (req, res) => {
+  const id = req.params.id;
+  db('zoos')
+    .where({ id })
+    .del()
+    .then(count => {
+      if (count > 0) {
+        res
+          .status(204)
+          .json({
+            message: 'This zoo has has been deleted.'
+          })
+      } else {
+        res
+          .status(404)
+          .json({
+            message: 'This zoo does not exist.'
+          })
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json(error)
+    })
+});
+
 const db = knex(knexConfig);
 
 module.exports = router;
