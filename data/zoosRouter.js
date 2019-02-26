@@ -44,6 +44,36 @@ router.get('/:id', (req, res) => {
     })
 });
 
+// POST REQUESTS
+
+router.post('/', (req, res) => {
+  db('zoos')
+    .insert(req.body)
+    .then(ids => {
+      const [id] = ids;
+
+      db('zoos')
+        .where({ id })
+        .first()
+        .then(zoo => {
+          res
+            .status(200)
+            .json(zoo);
+        })
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json(error);
+    })
+});
+
+// UPDATE REQUESTS
+
+
+
+// REMOVE REQUESTS
+
 const db = knex(knexConfig);
 
 module.exports = router;
